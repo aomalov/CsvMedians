@@ -22,7 +22,7 @@ package object csv_statistics {
     else List.empty
   }
 
-  def getGradeByIdx(grades:Seq[(Int,Int)],pos:Int):Int = {
+  def getGradeByIdx2(grades:Seq[(Int,Int)],pos:Int):Int = {
     var runningPos:Int=0
     for (elem <- grades) {
       if(pos>=runningPos && pos<=runningPos+elem._2)
@@ -32,4 +32,16 @@ package object csv_statistics {
     0
   }
 
-}
+  def getGradeByIdx(grades:Seq[(Int,Int)],pos:Int):Int = {
+    grades.foldLeft((false, 0)) {
+      case ((flag, runningIdx), (grade, count)) if !flag =>
+        if (pos>runningIdx &&  pos<=runningIdx + count)
+          return grade
+        else
+          (false, runningIdx + count)
+    }
+    0
+  }
+
+
+  }
